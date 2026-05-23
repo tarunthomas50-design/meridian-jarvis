@@ -442,11 +442,11 @@ elif "SCREENER" in page:
                     from factors.composite import run_scoring
 
                     df_uni = get_universe()
-                    tickers = df_uni["ticker"].head(100).tolist()  # top 100 for speed
+                    tickers = df_uni["ticker"].head(30).tolist()  # 30 for speed on free plan
 
-                    fetch_prices(tickers[:50])
-                    fetch_fundamentals(tickers[:30])
-                    fetch_short_interest(tickers[:50])
+                    fetch_prices(tickers)
+                    fetch_fundamentals(tickers)
+                    fetch_short_interest(tickers)
                     result = run_scoring(tickers)
                     st.cache_data.clear()
                     st.success(f"Scored {len(result)} tickers!")
@@ -460,11 +460,11 @@ elif "SCREENER" in page:
         st.warning("""
         **No scored data yet.** Click **🔄 Refresh Scores** to run the scoring engine.
 
-        First run fetches data for ~100 S&P 500 stocks — takes 3-5 minutes.
+        First run fetches data for ~30 S&P 500 stocks — takes 2-3 minutes.
         """)
         st.info("""
         **While you wait, here's what the screener does:**
-        - Scores 500 stocks on 8 factors (momentum, quality, value, growth, insider activity, short interest, estimate revisions, institutional flow)
+        - Scores S&P 500 stocks on 8 factors (momentum, quality, value, growth, insider activity, short interest, estimate revisions, institutional flow)
         - Ranks each factor within GICS sector (0-100 percentile)
         - Blends into a composite score with regime-conditional weights
         - Flags top quintile as **LONG** candidates, bottom quintile as **SHORT** candidates
@@ -676,7 +676,7 @@ elif "MARKET" in page:
             col.markdown(f"""
             <div class="metric-card" style="text-align:center">
               <div class="metric-label">{row['name']}</div>
-              <div class="big-metric">{row['price']:.0f if row['ticker']!= '^VIX' else 1}</div>
+              <div class="big-metric">{row['price']:.1f if row['ticker'] == '^VIX' else f"{row['price']:.0f}"}</div>
               <div class="metric-change" style="color:{color}">{chg:+.2f}%</div>
             </div>
             """, unsafe_allow_html=True)
