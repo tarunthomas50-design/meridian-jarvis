@@ -673,10 +673,11 @@ elif "MARKET" in page:
         for col, (_, row) in zip(cols, snap.iterrows()):
             chg = row["change_pct"]
             color = "#10b981" if chg > 0 else "#f43f5e"
+            price_str = f"{row['price']:.1f}" if row['ticker'] == '^VIX' else f"{row['price']:.0f}"
             col.markdown(f"""
             <div class="metric-card" style="text-align:center">
               <div class="metric-label">{row['name']}</div>
-              <div class="big-metric">{row['price']:.1f if row['ticker'] == '^VIX' else f"{row['price']:.0f}"}</div>
+              <div class="big-metric">{price_str}</div>
               <div class="metric-change" style="color:{color}">{chg:+.2f}%</div>
             </div>
             """, unsafe_allow_html=True)
