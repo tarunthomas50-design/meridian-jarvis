@@ -776,7 +776,7 @@ elif "MARKET" in page:
 # ══════════════════════════════════════════════════════════════════════════════
 elif "ADD TRADE" in page:
     from portfolio.state import (
-        add_position, position_size_recommendation, get_live_price, _init_db
+        add_position, position_size_recommendation, _init_db
     )
     _init_db()
 
