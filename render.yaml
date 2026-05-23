@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: meridian-jarvis
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run app.py --server.port $PORT --server.address 0.0.0.0 --server.headless true --browser.gatherUsageStats false
+    envVars:
+      - key: SEC_USER_AGENT
+        value: "Meridian Capital tarunthomas50@gmail.com"
+      - key: PYTHON_VERSION
+        value: "3.11"
+    disk:
+      name: data
+      mountPath: /opt/render/project/src/cache
+      sizeGB: 1
