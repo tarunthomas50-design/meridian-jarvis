@@ -11,6 +11,7 @@ from pathlib import Path
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
+from io import StringIO
 
 import sys
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -44,7 +45,7 @@ def fetch_sp500_wiki() -> pd.DataFrame:
         resp = requests.get(url, timeout=15, headers={"User-Agent": "Mozilla/5.0"})
         soup = BeautifulSoup(resp.text, "lxml")
         table = soup.find("table", {"id": "constituents"})
-        df = pd.read_html(str(table))[0]
+        df = pd.read_html(StringIO(str(table)))[0]
         df = df[["Symbol", "Security", "GICS Sector", "GICS Sub-Industry"]].copy()
         df.columns = ["ticker", "name", "sector", "sub_industry"]
         # BRK.B → BRK-B for yfinance
